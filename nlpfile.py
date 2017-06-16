@@ -1,13 +1,15 @@
+""" SOURCE : https://pythonprogramming.net/"""
+
 import nltk
 from nltk.tokenize import sent_tokenize,word_tokenize
 from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer, LancasterStemmer, SnowballStemmer
+from nltk.stem import PorterStemmer, LancasterStemmer, SnowballStemmer, WordNetLemmatizer
 
 import time
 
 st=time.time()
 
-txt="Hello python and numpy. How are you Mr. kapoor-rakshit? .and guessing, What? Going google Pyers developers riding   a car."
+txt="Hello pypy numpy. How are you Mr. kapoor-rakshit? Pythoning? and guessing, What? Going google Pyers developers riding   a car."
 
 sentences=sent_tokenize(txt)                            # separate sentences
 print(sentences)
@@ -82,6 +84,71 @@ WP	wh-pronoun	who, what
 WP$	possessive wh-pronoun	whose
 WRB	wh-abverb	where, when"""
 
-print(nltk.pos_tag(words))                            # part of speech tagging over a list of words
+tagged=nltk.pos_tag(words)                            # part of speech tagging over a list of words
+print(*tagged,sep="\n")
+
+
+chunkregex=r"""chunk: {<RB.?>*<VB.?>*<NNP>+<NN>?}"""
+chunkparser=nltk.RegexpParser(chunkregex)
+chunked=chunkparser.parse(tagged)                                 # NLTK tree variable (chunked)
+print(chunked)
+
+for i in chunked.subtrees(filter=lambda t:t.label()=="chunk"):    # iterate the tree using .subtrees()
+	print(i)                                                      # print only chunked parts of tree
+
+"""chunked.draw()"""                                                   # GUI interface  
+
+"""The idea here is to group nouns with the words that are in relation to them.
+
+<RB.?>* = "0 or more of any tense of adverb, RB;RBR;RBS as max. length can be 3, and all such occurrences" followed by:
+
+<VB.?>* = "0 or more of any tense of verb," followed by:
+
+<NNP>+ = "One or more proper nouns," followed by
+
+<NN>? = "zero or one singular noun.
+
+'.' = matches any character except a newline
+
+'*' = match 0 or more repetitions of the preceding RE. ex:- ab* will match ‘a’, ‘ab’, or ‘a’ followed by any number of ‘b’s.
+
+'?' = match 0 or 1 (ie OFF or ON)repetitions of the preceding RE. ab? will match either ‘a’ or ‘ab’.
+
+'+' = match 1 or more repetitions of the preceding RE. ab+ will match ‘a’ followed by any non-zero number of ‘b’s; it will not match just ‘a’."""
+
+
+"""Chunk everything except }----here----{"""
+chinkregex=r"""chink: {<.*>+}                            #important in next line, the chink part   
+                      }<VB.?|IN|DT|TO>+{"""              #we're removing from the chink one or more verbs, prepositions, determiners, or the word 'to'.
+chinkparser=nltk.RegexpParser(chinkregex)
+chinked=chinkparser.parse(tagged)
+print(chinked)
+
+
+namedentity=nltk.ne_chunk(tagged,binary=True)           # Named entity recognition
+print(namedentity)
+"""namedentity.draw()"""
+
+""" named entity to describe the word in detail (binary=False) and no detail ie just NE recognised (binary=True)
+
+ORGANIZATION - Georgia-Pacific Corp., WHO
+PERSON - Eddy Bonte, President Obama
+LOCATION - Murray River, Mount Everest
+DATE - June, 2008-06-29
+TIME - two fifty a m, 1:30 p.m.
+MONEY - 175 million Canadian Dollars, GBP 10.40
+PERCENT - twenty pct, 18.75 %
+FACILITY - Washington Monument, Stonehenge
+GPE - South East Asia, Midlothian"""
+
+
+""" stemming can often create non-existent words, whereas lemmas are actual words. 
+Some times you will wind up with a very similar word, but sometimes, you will wind up with a completely different word.
+lemmatize takes a part of speech parameter, "pos=v, pos=a." If not supplied, the default is "noun." 
+This means that an attempt will be made to find the closest noun, which can create trouble for you. """
+
+wnlm=WordNetLemmatizer()
+for i in words:
+	print(wnlm.lemmatize(i,pos="v"))
 
 print(time.time()-st,"seconds")
