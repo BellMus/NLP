@@ -18,8 +18,8 @@ Labeling words in a sentence as nouns, adjectives, verbs...etc. along with tense
 For complete list of POS tags refer to <b>nlpfile.py</b> above.
 <li><b>NER - Named Entity Recognition</b><br>
 Pull out entities like people, places, things, locations, monetary figures etc.
-<li><b>Chunking<b/><br>
-To group the words in text based on Nouns(generally), verbs etc. , to have an idea what the sentence is about.
-<li><b>Chinking<b/><br>
+<li><b>Chunking</b><br>
+To group the words in text based on Nouns(generally), Verbs etc. , to have an idea what the sentence is about.
+<li><b>Chinking</b><br>
 Chunk without the Chink, ie to group except certain parts of speech.
 </ul>
