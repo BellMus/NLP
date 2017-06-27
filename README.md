@@ -2,6 +2,11 @@
 Practice and examples of using nltk library for NLP
 <br>
 <ul>
+<li><b>Corpus</b><br>
+A large body of natural language text used for accumulating statistics on natural language text. The plural is corpora.
+<li><b>Lexicon</b><br>
+A lexicon is a collection of information about the words of a language about the lexical categories to which they belong. A lexical entry will include further information about the roles the word plays.<br>
+Example : BULL means an animal in english <b>also</b> the rise or positive for an investor.  
 <li><b>Tokenization</b><br>
 Splitting sentences (sentence tokenizer) and words (word tokenizer) from the body of text.
 <li><b>StopWords</b><br>
